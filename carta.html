@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Una cartita para ti 💌</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      overflow: hidden;
+      font-family: "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #ffd6e8, #ff85a2, #5c1a3a);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+    }
+
+    .container {
+      text-align: center;
+      position: relative;
+      z-index: 10;
+    }
+
+    h1 {
+      margin-bottom: 35px;
+      font-size: 38px;
+      text-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    }
+
+    .envelope {
+      width: 330px;
+      height: 220px;
+      background: #ff4f8b;
+      position: relative;
+      border-radius: 0 0 22px 22px;
+      box-shadow: 0 20px 45px rgba(0,0,0,0.35);
+      margin: auto;
+      transition: transform 0.6s ease;
+    }
+
+    .envelope:hover {
+      transform: scale(1.03);
+    }
+
+    .flap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      border-left: 165px solid transparent;
+      border-right: 165px solid transparent;
+      border-top: 120px solid #ff8fb3;
+      transform-origin: top;
+      transition: transform 1s ease;
+      z-index: 3;
+    }
+
+    .letter {
+      position: absolute;
+      width: 260px;
+      height: 155px;
+      background: #fff;
+      color: #ff4f8b;
+      left: 35px;
+      bottom: 25px;
+      border-radius: 15px;
+      padding: 22px;
+      font-weight: bold;
+      font-size: 19px;
+      transform: translateY(40px);
+      opacity: 0;
+      transition: all 1s ease;
+      z-index: 2;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+
+    .front {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 140px;
+      background: #ff4f8b;
+      border-radius: 0 0 22px 22px;
+      z-index: 4;
+    }
+
+    .front::before,
+    .front::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      border-bottom: 140px solid #ff6fa3;
+    }
+
+    .front::before {
+      left: 0;
+      border-right: 165px solid transparent;
+    }
+
+    .front::after {
+      right: 0;
+      border-left: 165px solid transparent;
+    }
+
+    .seal {
+      position: absolute;
+      top: 92px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 44px;
+      z-index: 5;
+      filter: drop-shadow(0 3px 5px rgba(0,0,0,0.3));
+    }
+
+    .open .flap {
+      transform: rotateX(180deg);
+      z-index: 1;
+    }
+
+    .open .letter {
+      transform: translateY(-95px);
+      opacity: 1;
+    }
+
+    .buttons {
+      margin-top: 35px;
+    }
+
+    button {
+      border: none;
+      padding: 14px 30px;
+      margin: 10px;
+      border-radius: 30px;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+      color: white;
+      background: linear-gradient(135deg, #ff2f7d, #ff8fab);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+      transition: 0.3s;
+    }
+
+    button:hover {
+      transform: scale(1.08);
+      background: linear-gradient(135deg, #ff005d, #ffb3c6);
+    }
+
+    .heart-message {
+      position: absolute;
+      bottom: 40px;
+      font-size: 22px;
+      font-weight: bold;
+      color: white;
+      animation: floatUp 5s ease forwards;
+      text-shadow: 0 4px 10px rgba(0,0,0,0.4);
+      pointer-events: none;
+      white-space: nowrap;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0) scale(0.7);
+        opacity: 0;
+      }
+
+      15% {
+        opacity: 1;
+      }
+
+      100% {
+        transform: translateY(-650px) scale(1.3);
+        opacity: 0;
+      }
+    }
+
+    .sparkle {
+      position: absolute;
+      color: #fff0f6;
+      font-size: 18px;
+      animation: sparkleMove 4s linear infinite;
+      opacity: 0.8;
+    }
+
+    @keyframes sparkleMove {
+      from {
+        transform: translateY(100vh);
+      }
+      to {
+        transform: translateY(-20vh);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <h1>Te llegó una cartita 💌</h1>
+
+    <div class="envelope" id="envelope">
+      <div class="flap"></div>
+
+      <div class="letter">
+        Para alguien muy especial...  
+        <br><br>
+        esto es para ti 💖
+      </div>
+
+      <div class="front"></div>
+      <div class="seal">❤️</div>
+    </div>
+
+    <div class="buttons">
+      <button onclick="abrirCarta()">Abrir</button>
+      <button onclick="reiniciar()">Reiniciar</button>
+    </div>
+  </div>
+
+  <script>
+const envelope = document.getElementById("envelope");
+
+const carta = document.querySelector(".letter");
+
+const mensajes = [
+    "Te ves preciosa hoy ❤️",
+    "Espero que tengas un día maravilloso 🌸",
+    "Tu sonrisa ilumina más de lo que imaginas ✨",
+    "No olvides lo increíble que eres 💕",
+    "Ojalá hoy te pase algo bonito 🌷",
+    "Hay personas lindas, y luego estás tú 💖",
+    "Espero que hoy tengas muchos motivos para sonreír 😊",
+    "Nunca dejes de ser esa persona tan especial 🌹",
+    "Tu forma de ser hace los días mejores 💌",
+    "Eres más importante de lo que crees 💞",
+    "Espero que estés teniendo un día tan bonito como tú 🌺",
+    "Me alegra mucho que existas ❤️",
+    "No importa cómo vaya tu día, recuerda que eres increíble ✨",
+    "Hoy también te ves hermosa 🌸",
+    "Ojalá pudiera regalarte una sonrisa cuando la necesites 💕",
+    "Tu presencia hace todo un poco más bonito 💖",
+    "Que hoy recibas toda la felicidad que mereces 🌷",
+    "Nunca subestimes lo especial que eres ❤️",
+    "Si nadie te lo ha dicho hoy: te ves preciosa 💘",
+    "Gracias por ser exactamente como eres 💕"
+];
+
+let abierta = false;
+
+function abrirCarta() {
+
+    if (abierta) return;
+
+    abierta = true;
+
+    const mensajeAleatorio =
+        mensajes[Math.floor(Math.random() * mensajes.length)];
+
+    carta.innerHTML = `
+        <div style="
+            display:flex;
+            flex-direction:column;
+            justify-content:center;
+            align-items:center;
+            height:100%;
+            text-align:center;
+        ">
+            <div style="
+                font-size:22px;
+                margin-bottom:12px;
+            ">
+                💌
+            </div>
+
+            <div style="
+                font-size:18px;
+                line-height:1.5;
+            ">
+                ${mensajeAleatorio}
+            </div>
+        </div>
+    `;
+
+    envelope.classList.add("open");
+
+    for(let i = 0; i < 25; i++) {
+        setTimeout(() => {
+            crearCorazon();
+        }, i * 120);
+    }
+}
+
+function crearCorazon() {
+
+    const heart = document.createElement("div");
+
+    heart.innerHTML = "❤️";
+
+    heart.style.position = "absolute";
+    heart.style.left = (Math.random() * 70 + 15) + "vw";
+    heart.style.bottom = "0";
+
+    heart.style.fontSize =
+        (Math.random() * 25 + 15) + "px";
+
+    heart.style.pointerEvents = "none";
+
+    heart.style.animation =
+        "floatUp 4s ease forwards";
+
+    document.body.appendChild(heart);
+
+    setTimeout(() => {
+        heart.remove();
+    }, 4000);
+}
+
+function reiniciar() {
+
+    abierta = false;
+
+    envelope.classList.remove("open");
+
+    carta.innerHTML = `
+        Para alguien muy especial...
+        <br><br>
+        esto es para ti 💖
+    `;
+
+    document.querySelectorAll("body > div").forEach(el => {
+        if(
+            el.innerHTML === "❤️" &&
+            !el.classList.contains("container")
+        ){
+            el.remove();
+        }
+    });
+}
+
+function crearBrillito() {
+
+    const sparkle = document.createElement("div");
+
+    sparkle.className = "sparkle";
+    sparkle.innerHTML = "✦";
+
+    sparkle.style.left =
+        Math.random() * 100 + "vw";
+
+    sparkle.style.animationDuration =
+        Math.random() * 3 + 3 + "s";
+
+    document.body.appendChild(sparkle);
+
+    setTimeout(() => {
+        sparkle.remove();
+    }, 5000);
+}
+
+setInterval(crearBrillito, 300);
+</script>
+
+</body>
+</html>
